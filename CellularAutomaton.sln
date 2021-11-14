@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenGL", "OpenGL\OpenGL.vcxproj", "{0F525415-093C-463A-AE9E-8F40262CB93A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CellularAutomaton", "CellularAutomaton\CellularAutomaton.vcxproj", "{0F525415-093C-463A-AE9E-8F40262CB93A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
