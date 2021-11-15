@@ -54,7 +54,7 @@ vector<string> CellularAutomata::CellularAutomata1D() {
     /*getting the number of generation which the user wants to generate*/
     string oneAtATime;
     while (true) {
-        cout << "Ouput one generation at a time? [Y/N]" << endl;
+        cout << "Output one generation at a time? [Y/N]" << endl;
         cin >> oneAtATime;
         if (regex_match(oneAtATime, regex("^[Y]$|^[y]$|^[N]$|^[n]$"))) {
             break;
