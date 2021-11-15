@@ -10,10 +10,12 @@
 #include <algorithm>
 using namespace std;
 
+/*1D Cellular automata*/
 vector<string> CellularAutomata::CellularAutomata1D() {
     struct Rules rules;
     vector <string> output;
     string rule;
+    /*getting the rule from the user*/
     while (true) {
         cout << "Enter the number of the rule (0-256): ";
         cin >> rule;
@@ -22,7 +24,7 @@ vector<string> CellularAutomata::CellularAutomata1D() {
             break;
         }
     }
-
+    /*getting the starting row*/
     string row;
     while (true) {
 
@@ -35,21 +37,47 @@ vector<string> CellularAutomata::CellularAutomata1D() {
     }
     string file;
     string fileName;
+    /*checks if the user wants to export the output of the function to a file */
     while (true) {
 
         cout << "Export the result to file [Y/N]: " << endl;
         cin >> file;
         if (regex_match(file, regex("^[Y]$|^[y]$|^[N]$|^[n]$"))) {
-           
-            cout << "Enter the name of the file: ";
-            cin >> fileName;
+            if (regex_match(file, regex("^[Y]$|^[y]$"))) {
+                cout << "Enter the name of the file: ";
+                cin >> fileName;
+            }
             break;
         }
 
     }
+    /*getting the number of generation which the user wants to generate*/
+    string oneAtATime;
+    while (true) {
+        cout << "Ouput one generation at a time? [Y/N]" << endl;
+        cin >> oneAtATime;
+        if (regex_match(oneAtATime, regex("^[Y]$|^[y]$|^[N]$|^[n]$"))) {
+            break;
+        }
+    }
+    string genNumber="1";
+    /*one generation at a time option*/
+    if (regex_match(oneAtATime, regex("^[N]$|^[n]$"))) {
+        
+        while (true) {
+
+            cout << "Enter the number of generations: " << endl;
+            cin >> genNumber;
+            if (regex_match(genNumber, regex("^[0-9]*$"))) {
+                break;
+            }
+        }
+    }
+    /*adding the first line to the 1D Cellular automata*/
     output.push_back(row);
     string newLine;
-    for (int x = 0; x < 20; ++x) {
+    /*generating new lines from the prevous line*/
+    for (int x = 0; x < std::stoi(genNumber); ++x) {
 
 
         for (int i = 0; i < row.length(); i++) {
@@ -78,17 +106,32 @@ vector<string> CellularAutomata::CellularAutomata1D() {
         output.push_back(newLine);
         row = newLine;
         newLine = "";
-        
+        /*Asks the user if they want to generate a new line if the generation at a time was selected*/
+        if (regex_match(oneAtATime, regex("^[Y]$|^[y]$"))) {
+            while (true) {
+                cout << "Generate new generation? [Y/N]" << endl;
+                cin >> oneAtATime;
+                if (regex_match(oneAtATime, regex("^[Y]$|^[y]$|^[N]$|^[n]$"))) {
+                    break;
+                }
+            }
+            if (regex_match(oneAtATime, regex("^[Y]$|^[y]$"))) {
+                x--;
+            }
+        }
         
     }
+    /*exporting the output to a file*/
     if (regex_match(file, regex("^[Y]$|^[y]$"))) {
         ExportToFile(output,fileName);
     }
     return output;
 }
+/*Wrapping around for 2D cellular automata*/
 int CellularAutomata::getCell(int iElement, int maxi) {
     return (iElement % maxi + maxi) % maxi;
 }
+/*This function creates the next sate from a previus state in game of life*/
 vector<string> CellularAutomata::GameOfLife(vector <string> startingState) {
     vector <string> newState(startingState.size());
     for (int i = 0; i < startingState.size(); i++)
@@ -140,7 +183,58 @@ vector<string> CellularAutomata::GameOfLife(vector <string> startingState) {
     return newState;
 }
 
+vector<string> CellularAutomata::Other2D(vector <string> startingState) {
+    vector <string> newState(startingState.size());
+    for (int i = 0; i < startingState.size(); i++)
+    {
+        for (int j = 0; j < startingState.at(0).size(); j++) {
+            int livingNeighbours = 0;
+            if (startingState[getCell(i, startingState.size())].at(getCell(j + 1, startingState.at(0).size())) == '1') {
+                livingNeighbours++;
+            }
+            if (startingState[getCell(i, startingState.size())].at(getCell(j - 1, startingState.at(0).size())) == '1') {
+                livingNeighbours++;
+            }
+            if (startingState[getCell(i + 1, startingState.size())].at(getCell(j, startingState.at(0).size())) == '1') {
+                livingNeighbours++;
+            }
+            if (startingState[getCell(i + 1, startingState.size())].at(getCell(j + 1, startingState.at(0).size())) == '1') {
+                livingNeighbours++;
+            }
+            if (startingState[getCell(i + 1, startingState.size())].at(getCell(j - 1, startingState.at(0).size())) == '1') {
+                livingNeighbours++;
+            }
+            if (startingState[getCell(i - 1, startingState.size())].at(getCell(j + 1, startingState.at(0).size())) == '1') {
+                livingNeighbours++;
+            }
+            if (startingState[getCell(i - 1, startingState.size())].at(getCell(j - 1, startingState.at(0).size())) == '1') {
+                livingNeighbours++;
+            }
+            if (startingState[getCell(i - 1, startingState.size())].at(getCell(j, startingState.at(0).size())) == '1') {
+                livingNeighbours++;
+            }
+            if (startingState[i].at(j) == '1') {
+                if (livingNeighbours == 1 || livingNeighbours == 4) {
+                    newState[i] += '1';
+                }
+                else {
+                    newState[i] += '0';
+                }
+            }
+            else {
+                if (livingNeighbours == 2) {
+                    newState[i] += '1';
+                }
+                else {
+                    newState[i] += '0';
+                }
+            }
+        }
+    }
+    return newState;
+}
 
+/*This funciton converts binary numbers to decimal numbers*/
 int  CellularAutomata::BinaryToDecimal(int binary) {
     int d=0, i=0, remainder = 0;
 
@@ -152,7 +246,7 @@ int  CellularAutomata::BinaryToDecimal(int binary) {
     }
     return d;
 }
-
+/*This function converts decimal numbers to binary numbers*/
 int  CellularAutomata::DecimalToBinary(int dec) {
     if (dec < 0) {
         throw std::invalid_argument("received negative value");
@@ -164,7 +258,7 @@ int  CellularAutomata::DecimalToBinary(int dec) {
     }
     return std::stoi(s);
 }
-
+/*this functnio defines the rules for the 1D Cellular automata*/
 Rules CellularAutomata::setRules(int n) {
     Rules rules;
     string s = std::to_string(CellularAutomata::DecimalToBinary(n));
@@ -188,7 +282,7 @@ Rules CellularAutomata::setRules(int n) {
     rules.rules[7].outcome = s.at(7);
     return rules;
 }
-
+/*This function writes a string vector to a file*/
 void CellularAutomata::ExportToFile(vector <string> v,string fileName) {
 
     ofstream File(fileName);
@@ -199,7 +293,7 @@ void CellularAutomata::ExportToFile(vector <string> v,string fileName) {
         for (const auto& e : v) File << e << "\n";
     }
 }
-
+/*This function reads a file to a string vector*/
 vector <string> CellularAutomata::ImportFile(string fileName) {
     vector<string> data;
     ifstream File(fileName);
