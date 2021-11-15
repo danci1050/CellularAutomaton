@@ -381,13 +381,33 @@ void MainMenu() {
 		case 5:
 			cout << "Enter a decimal number: ";
 			cin >> choice;
-			cout << CellularAutomata::DecimalToBinary(std::stoi(choice)) << endl;
-			
+			if (regex_match(choice, regex("^([0-9])*$"))) {
+				if (std::stoi(choice) > INT_MAX) {
+					cout << CellularAutomata::DecimalToBinary(std::stoi(choice)) << endl;
+				}
+				else {
+					cout << "The decimal number was too large" << endl;;
+				}
+			}
+			else {
+				cout << "Wrong input"<<endl;;
+			}
 			break;
 		case 6:
+			
 			cout << "Enter a binary number: ";
 			cin >> choice;
-			cout << CellularAutomata::BinaryToDecimal(std::stoi(choice)) << endl;
+			if (regex_match(choice, regex("^([0-1])*$"))) {
+				if (choice.length() < 31) {
+					cout << CellularAutomata::BinaryToDecimal(std::stoi(choice)) << endl;
+				}
+				else {
+					cout << "The bianry number was too big";
+				}
+			}
+			else {
+				cout << "Wrong input" << endl;
+			}
 			break;
 		case 7:
 			exit(0);
