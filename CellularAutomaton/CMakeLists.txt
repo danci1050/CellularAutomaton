@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.7)
-project(OpenGLSetup)
+project(CellularAutomata)
 
 set(CMAKE_CXX_STANDARD 11)
 
@@ -11,15 +11,13 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${dir}/build)
 
 include_directories(include)
 
-#Include library files
 include_directories(GLAD/include)
 
 
 file(COPY shaders DESTINATION ${dir}/build)
 
 
-#Add deps
 add_subdirectory(dependencies)
 
-add_executable(OpenGLSetup ${SOURCE_FILES} ${HEADER_FILES})
-target_link_libraries(OpenGLSetup glfw)
+add_executable(CellularAutomata ${SOURCE_FILES} ${HEADER_FILES})
+target_link_libraries(CellularAutomata glfw)
